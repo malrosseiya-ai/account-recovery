@@ -1,0 +1,554 @@
+承知いたしました。
+ケース3-Aのトークスクリプトから改行を削除し、その他の変更は前回の内容（「マイナンバーバード」から「マイナンバーカード」への修正、その他最新のスクリプト内容の反映）を維持したHTMLコードを生成します。
+
+ファイル名は `account_recovery_tabs_no_forced_linebreak.html` などとして保存してください。
+
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アカウントリカバリー - トークスクリプト（タブ切り替え）</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4; /* 行間を詰める */
+            color: #333;
+            margin: 0;
+            background-color: #f4f7f6;
+            font-size: 14px; /* 全体的に少し小さく */
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px; /* パディングも少し詰める */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 8px; /* パディングも詰める */
+            margin-bottom: 15px; /* マージンも詰める */
+            text-align: center;
+            font-size: 24px; /* タイトルサイズ調整 */
+        }
+        h2 {
+            color: #007bff;
+            margin-top: 20px; /* マージンを詰める */
+            font-size: 18px; /* 見出しサイズ調整 */
+        }
+        h3 {
+            color: #333;
+            margin-top: 15px; /* マージンを詰める */
+            margin-bottom: 10px; /* マージンを詰める */
+            font-size: 16px; /* 見出しサイズ調整 */
+        }
+        p {
+            margin-bottom: 8px; /* 段落下のマージンを詰める */
+        }
+        .script-box {
+            background-color: #e9f7ef;
+            border-left: 5px solid #28a745;
+            padding: 10px; /* パディングを詰める */
+            margin-top: 10px; /* マージンを詰める */
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-size: 14px; /* スクリプト内のフォントサイズ調整 */
+        }
+        .instruction {
+            font-style: italic;
+            color: #666;
+            margin-top: 15px; /* マージンを詰める */
+        }
+
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 15px; /* マージンを詰める */
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 15px; /* パディングを詰める */
+            transition: 0.3s;
+            font-size: 14px; /* タブボタンのフォントサイズ調整 */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin-right: 5px;
+            white-space: nowrap;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #007bff;
+            color: white;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: -2px;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px 0; /* パディングを詰める */
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Specific Case Styling */
+        .customer-status {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 8px; /* パディングを詰める */
+            margin-bottom: 10px; /* マージンを詰める */
+            border-radius: 4px;
+            font-size: 13px; /* フォントサイズを調整 */
+        }
+        .address-change {
+            margin-top: 15px; /* マージンを詰める */
+            padding-left: 15px; /* パディングを詰める */
+            border-left: 3px solid #6c757d;
+        }
+        .address-change h4 {
+            color: #6c757d;
+            margin-bottom: 8px; /* マージンを詰める */
+            font-size: 15px; /* 見出しサイズ調整 */
+        }
+        .option-box {
+            margin-top: 15px; /* マージンを詰める */
+            padding-left: 15px; /* パディングを詰める */
+            border-left: 3px solid #007bff;
+        }
+        .option-box h4 {
+            color: #007bff;
+            margin-bottom: 8px; /* マージンを詰める */
+            font-size: 15px; /* 見出しサイズ調整 */
+        }
+        .address-change h5 {
+            color: #6c757d;
+            margin-bottom: 5px; /* マージンを詰める */
+            font-size: 14px; /* 見出しサイズ調整 */
+        }
+        .sub-option {
+            margin-top: 8px; /* マージンを詰める */
+            padding-left: 8px; /* パディングを詰める */
+            border-left: 1px dashed #6c757d;
+            font-style: italic;
+            font-size: 13px; /* フォントサイズを調整 */
+        }
+        .icon {
+            font-size: 1.1em; /* アイコンサイズ調整 */
+            vertical-align: middle;
+            margin-right: 3px; /* マージン調整 */
+        }
+
+        /* Flow Diagram Styling */
+        .flow-diagram {
+            background-color: #e0f7fa; /* 薄い水色 */
+            border: 1px solid #00bcd4; /* 水色のボーダー */
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            line-height: 1.3;
+        }
+        .flow-diagram h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #007bff;
+            font-size: 15px;
+        }
+        .flow-step {
+            display: flex;
+            flex-wrap: wrap; /* フローが長い場合に折り返す */
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .flow-step:last-child {
+            margin-bottom: 0;
+        }
+        .flow-arrow {
+            margin: 0 5px;
+            color: #00bcd4; /* 水色の矢印 */
+            font-weight: bold;
+        }
+        .flow-label {
+            font-weight: bold;
+            color: #0056b3; /* 濃いめの青 */
+            margin-right: 5px;
+        }
+        .flow-value {
+            color: #dc3545; /* 赤 */
+            font-weight: bold;
+        }
+        .flow-status {
+            color: #28a745; /* 緑 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>【トークスクリプト】アカウントリカバリー</h1>
+        <p>お客様の状況（ID/PW、登録メールアドレス、登録電話番号（携帯）、暗証番号の認識状況）を正確にヒアリングし、どのケースに該当するかを判断してください。</p>
+        <p class="instruction">（お客様の状況をヒアリングし、該当するケースのタブを選択してください）</p>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'commonIntro')">共通冒頭</button>
+            <button class="tab-button" onclick="openTab(event, 'case1')">ケース1: 全て不明</button>
+            <button class="tab-button" onclick="openTab(event, 'case2')">ケース2: メールOK</button>
+            <button class="tab-button" onclick="openTab(event, 'case3')">ケース3: 電話OK</button>
+            <button class="tab-button" onclick="openTab(event, 'case4')">ケース4: 追加認証NG</button>
+            <button class="tab-button" onclick="openTab(event, 'case5')">ケース5: リスクベースNG</button>
+        </div>
+
+        <!-- Tab Content: 共通冒頭スクリプト -->
+        <div id="commonIntro" class="tab-content active">
+            <h2>【共通冒頭スクリプト】</h2>
+            <div class="script-box">
+                <p>「ログインでお困りとのこと、かしこまりました。お客様の状況をいくつか確認させていただけますでしょうか。」</p>
+            </div>
+            <p class="instruction">（お客様の状況をヒアリングし、該当するケースへ進む）</p>
+        </div>
+
+        <!-- Tab Content: ケース1 -->
+        <div id="case1" class="tab-content">
+            <h2>1. ログインできない（全て不明・不可）</h2>
+            <div class="flow-diagram">
+                <h3>このケースに該当するお客様状況</h3>
+                <div class="flow-step">
+                    <span class="flow-label">ID/PW:</span> <span class="flow-value">不明</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録メールアドレス:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録電話番号（携帯）:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">暗証番号:</span> <span class="flow-status">認識有 or 無</span>
+                </div>
+            </div>
+
+            <h3>【お客様状況】</h3>
+            <div class="customer-status">
+                <p>ID/PW：不明</p>
+                <p>登録メールアドレス：不可</p>
+                <p>登録電話番号（携帯）：不可</p>
+                <p>暗証番号：認識有 or 無</p>
+            </div>
+
+            <h3>【トークスクリプト】</h3>
+            <div class="script-box">
+                <p>「ID、PWがご不明とのことですのでID、PWが記載された書面の郵送のお手続きをご案内いたします。ご登録のご住所に変更はございませんでしょうか。」</p>
+            </div>
+
+            <div class="address-change">
+                <h4><span class="icon">🏠</span> 住所変更　無 の場合</h4>
+                <div class="script-box">
+                    <p>「ご登録のご住所に変更はないとのこと、かしこまりました。それでは私の方で、ご登録のご住所宛に発送手配を承ります。簡易書留での発送となりますが、3～4営業日程度で届きますので、お受け取りいただきログインをお試しください。」</p>
+                </div>
+            </div>
+
+            <div class="address-change">
+                <h4><span class="icon">🏠</span> 住所変更　有 の場合</h4>
+                <div class="script-box">
+                    <p>「ご登録のご住所に変更があるとのこと、かしこまりました。その場合、まずはご住所変更のお手続き行っていただく必要がございます。私の方で新しいご住所あてにご登録のご住所・電話番号・メールアドレスの変更ができる書類を発送させていただきます。必要事項をご記入のうえ、ご返送ください。変更手続きが完了しましたら、新しいご住所宛にID、PWが記載された書面を発送させていただきますので、お受け取りいただきログインをお試しください。」</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: ケース2 -->
+        <div id="case2" class="tab-content">
+            <h2>2. ログインできない（メールアドレス利用可能）</h2>
+            <div class="flow-diagram">
+                <h3>このケースに該当するお客様状況</h3>
+                <div class="flow-step">
+                    <span class="flow-label">ID/PW:</span> <span class="flow-value">不明</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録メールアドレス:</span> <span class="flow-status">可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録電話番号（携帯）:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">暗証番号:</span> <span class="flow-value">認識無</span>
+                </div>
+            </div>
+
+            <h3>【お客様状況】</h3>
+            <div class="customer-status">
+                <p>ID/PW：不明</p>
+                <p>登録メールアドレス：可</p>
+                <p>登録電話番号（携帯）：不可</p>
+                <p>暗証番号：認識無</p>
+            </div>
+
+            <h3>【トークスクリプト】</h3>
+            <div class="script-box">
+                <p>「ご登録のメールアドレスがご利用可能ということですので、ウェブ上でログインIDの再通知やパスワードの再設定手続きが可能です。マイナンバーカードをお持ちの場合、iGrowというアプリからお手続きを進めていただくことで即時にログインしていただくことが可能です。マイナンバーカードをお持ちでしょうか？iGrowをご利用されていますでしょうか？（これからアプリダウンロード含む）」</p>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅰️</span> iGrow / マイナンバーカード認証　可能 の場合</h4>
+                <div class="script-box">
+                    <p>「ありがとうございます。それではご利用の携帯電話、もしくはご登録のメールアドレス宛に、お手続きに関するご案内をお送りいたします。届いたSMS（メール）より該当する項目を選択していただき、iGrowよりお手続きを進めてください。マイナンバーカードでご本人様確認を行うことで、即時に手続きが完了し、ログインできるようになります。こちらのお手続きをおこなってもログインできない場合には登録電話番号（携帯電話）の変更が必要となります。再度、SMS（メール）から該当する項目を選択してお手続きいただくと、ウェブサイト上で変更が完了し、ログインができるようになりますので、案内に沿ってお手続きを行ってください。」</p>
+                </div>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅱️</span> iGrow / マイナンバーカード認証　不可 or 郵送希望 の場合</h4>
+                <div class="script-box">
+                    <p>「かしこまりました。それではID、PWが記載された書面の郵送のお手続きをご案内いたします。ご登録のご住所に変更はございませんでしょうか。」</p>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　無 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録の住所に変更がないようでしたら、私の方でご登録のご住所宛にID、PWが記載された書面の発送手配を承ります。3～4営業日程度で届きますので、お受け取りいただきログインをお試しください。」</p>
+                    </div>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　有 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録のご住所に変更があるとのこと、かしこまりました。その場合、まずはご住所変更のお手続き行っていただく必要がございます。私の方で新しいご住所あてにご登録のご住所・電話番号の変更ができる書類を発送させていただきます。必要事項をご記入のうえ、ご返送ください。変更手続きが完了しましたら、新しいご住所宛にID、PWが記載された書面を発送させていただきますので、お受け取りいただきログインをお試しください。ログイン後には、ウェブサイト上で暗証番号の変更も可能ですので、必要に応じてお手続きください。」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: ケース3 -->
+        <div id="case3" class="tab-content">
+            <h2>3. ログインできない（電話番号利用可能）</h2>
+            <div class="flow-diagram">
+                <h3>このケースに該当するお客様状況</h3>
+                <div class="flow-step">
+                    <span class="flow-label">ID/PW:</span> <span class="flow-value">不明</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録メールアドレス:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録電話番号（携帯）:</span> <span class="flow-status">可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">暗証番号:</span> <span class="flow-value">認識無</span>
+                </div>
+            </div>
+
+            <h3>【お客様状況】</h3>
+            <div class="customer-status">
+                <p>ID/PW：不明</p>
+                <p>登録メールアドレス：不可</p>
+                <p>登録電話番号（携帯）：可</p>
+                <p>暗証番号：認識無</p>
+            </div>
+
+            <h3>【トークスクリプト】</h3>
+            <div class="script-box">
+                <p>「ご登録の電話番号がご利用可能ということですので、ウェブ上でログインIDの再通知やパスワードの再設定手続きが可能です。マイナンバーカードをお持ちの場合、iGrowというアプリからお手続きを進めていただくことで即時にログインしていただくことが可能です。マイナンバーカードをお持ちでしょうか？iGrowをご利用されていますでしょうか？（これからアプリダウンロード含む）」</p>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅰️</span> iGrow / マイナンバーカード認証　可能 の場合</h4>
+                <div class="script-box">
+                    <p>「ありがとうございます。それではご登録の携帯電話宛に、お手続きに関するご案内をお送りいたします。届いたSMSより該当する項目を選択していただき、iGrowよりお手続きを進めてください。マイナンバーカードでご本人様確認を行うことで、即時に手続きが完了し、ログインできるようになります。こちらのお手続きをおこなってもログインできない場合には登録メールアドレスの変更が必要となります。再度、SMSから該当する項目を選択してお手続きいただくと、ウェブサイト上で変更が完了し、ログインができるようになりますので、案内に沿ってお手続きを行ってください。」</p>
+                </div>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅱️</span> iGrow / マイナンバーカード認証　不可 or 郵送希望 の場合</h4>
+                <div class="script-box">
+                    <p>「かしこまりました。それではID、PWが記載された書面の郵送のお手続きをご案内いたします。ご登録のご住所に変更はございませんでしょうか。」</p>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　無 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録の住所に変更がないようでしたら、私の方でご登録のご住所宛にID、PWが記載された書面の発送手配を承ります。3～4営業日程度で届きますので、お受け取りいただきログインをお試しください。」</p>
+                    </div>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　有 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録のご住所に変更があるとのこと、かしこまりました。その場合、まずはご住所変更のお手続き行っていただく必要がございます。私の方で新しいご住所あてにご登録のご住所・メールアドレスの変更ができる書類を発送させていただきます。必要事項をご記入のうえ、ご返送ください。変更手続きが完了しましたら、新しいご住所宛にID、PWが記載された書面を発送させていただきますので、お受け取りいただきログインをお試しください。」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: ケース4 -->
+        <div id="case4" class="tab-content">
+            <h2>4. ログイン追加認証できない</h2>
+            <div class="flow-diagram">
+                <h3>このケースに該当するお客様状況</h3>
+                <div class="flow-step">
+                    <span class="flow-label">ID/PW:</span> <span class="flow-status">認識有</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録メールアドレス:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録電話番号（携帯）:</span> <span class="flow-status">可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">暗証番号:</span> <span class="flow-status">認識無 or 有</span>
+                </div>
+            </div>
+
+            <h3>【お客様状況】</h3>
+            <div class="customer-status">
+                <p>ID/PW：認識有</p>
+                <p>登録メールアドレス：不可</p>
+                <p>登録電話番号（携帯）：可</p>
+                <p>暗証番号：認識無 or 有</p>
+            </div>
+
+            <h3>【トークスクリプト】</h3>
+            <div class="script-box">
+                <p>「ログイン時に追加認証ができない状況でいらっしゃるのですね。ご登録の携帯電話がご利用可能ということですので、ウェブ上でログインIDの再通知やパスワードの再設定手続きが可能です。マイナンバーカードをお持ちの場合、iGrowというアプリからお手続きを進めていただくことで即時にログインしていただくことが可能です。マイナンバーカードをお持ちでしょうか？iGrowをご利用されていますでしょうか？（これからアプリダウンロード含む）」</p>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅰️</span> iGrow / マイナンバーカード認証　可能 の場合</h4>
+                <div class="script-box">
+                    <p>「ありがとうございます。それではご登録の携帯電話宛に、お手続きに関するご案内をお送りいたします。届いたSMSより該当する項目を選択していただき、iGrowよりお手続きを進めてください。新しいメールアドレスにご変更いただいた後、ログインをお試しください。」</p>
+                </div>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅱️</span> iGrow / マイナンバーカード認証　不可 or 郵送希望 の場合</h4>
+                <div class="script-box">
+                    <p>「かしこまりました。それでは、メールアドレスの変更について郵送でのお手続きをご案内いたします。ご登録のご住所に変更はございませんでしょうか。」</p>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　無 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録の住所に変更がないようでしたら、ウェブログイン前の画面よりお手続きいただくことで、ご登録のご住所宛にメールアドレス変更届が郵送されます。この変更届でメールアドレスの変更が可能です。変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                    </div>
+                    <div class="sub-option">
+                        <p>(お客様が電話で郵送を希望した場合)</p>
+                        <div class="script-box">
+                            <p>「かしこまりました。ご登録の住所に変更がないようでしたら、私の方でご登録のご住所宛にメールアドレスの変更ができる書類を発送させていただきます。3～4営業日程度で届きますので、必要事項をご記入のうえ、ご返送をお願いします。変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　有 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご住所に変更があるとのこと、かしこまりました。ウェブログイン前の画面よりお手続きいただくことで、新しいご住所宛にご登録のご住所・メールアドレスが変更できる書類が郵送されます。必要事項をご記入のうえ、ご返送ください。メールアドレスの変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                    </div>
+                    <div class="sub-option">
+                        <p>(お客様が電話で郵送を希望した場合)</p>
+                        <div class="script-box">
+                            <p>「ご登録のご住所に変更があるとのこと、かしこまりました。</p>
+                            <p>その場合、まずはご住所変更のお手続き行っていただく必要がございます。私の方で新しいご住所あてにご登録のご住所・メールアドレスの変更ができる書類を発送させていただきます。必要事項をご記入のうえ、ご返送ください。変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: ケース5 -->
+        <div id="case5" class="tab-content">
+            <h2>5. リスクベース認証できない</h2>
+            <div class="flow-diagram">
+                <h3>このケースに該当するお客様状況</h3>
+                <div class="flow-step">
+                    <span class="flow-label">ID/PW:</span> <span class="flow-status">認識有</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録メールアドレス:</span> <span class="flow-status">可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">登録電話番号（携帯）:</span> <span class="flow-value">不可</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-label">暗証番号:</span> <span class="flow-status">認識無 or 有</span>
+                </div>
+            </div>
+
+            <h3>【お客様状況】</h3>
+            <div class="customer-status">
+                <p>ID/PW：認識有</p>
+                <p>登録メールアドレス：可</p>
+                <p>登録電話番号（携帯）：不可</p>
+                <p>暗証番号：認識無 or 有</p>
+            </div>
+
+            <h3>【トークスクリプト】</h3>
+            <div class="script-box">
+                <p>「リスクベース認証によりログインができない状況でいらっしゃるのですね。ご登録のメールアドレスがご利用可能ということですので、マイナンバーカードをお持ちの場合、iGrowというアプリからお手続きを進めていただくことで即時にログインしていただくことが可能です。マイナンバーカードをお持ちでしょうか？iGrowをご利用されていますでしょうか？（これからアプリダウンロード含む）」</p>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅰️</span> iGrow / マイナンバーカード認証　可能 の場合</h4>
+                <div class="script-box">
+                    <p>「ありがとうございます。それではご利用の携帯電話、もしくはご登録のメールアドレス宛に、お手続きに関するご案内をお送りいたします。届いたSMS（メール）より該当する項目を選択していただき、iGrowよりお手続きを進めてください。新しい携帯電話番号にご変更いただいた後、ログインをお試しください。」</p>
+                </div>
+            </div>
+
+            <div class="option-box">
+                <h4><span class="icon">🅱️</span> iGrow / マイナンバーカード認証　不可 or 郵送希望 の場合</h4>
+                <div class="script-box">
+                    <p>「かしこまりました。それでは、電話番号の変更について郵送でのお手続きをご案内いたします。ご登録のご住所に変更はございませんでしょうか。」</p>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　無 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご登録の住所に変更がないようでしたら、ウェブログイン前の画面よりお手続きいただくことで、ご登録のご住所宛に電話番号の変更届が郵送されます。この変更届で電話番号の変更が可能です。変更が完了しましたら、ご登録のメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                    </div>
+                    <div class="sub-option">
+                        <p>(お客様が電話で郵送を希望した場合)</p>
+                        <div class="script-box">
+                            <p>「かしこまりました。ご登録の住所に変更がないようでしたら、私の方でご登録のご住所宛に電話番号の変更ができる書類を発送させていただきます。3～4営業日程度で届きますので、必要事項をご記入のうえ、ご返送をお願いします。変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="address-change">
+                    <h5><span class="icon">🏠</span> 住所変更　有 の場合</h5>
+                    <div class="script-box">
+                        <p>「ご住所に変更があるとのこと、かしこまりました。ウェブログイン前の画面よりお手続きいただくことで、新しいご住所宛にご登録のご住所・電話番号が変更できる書類が郵送されます。必要事項をご記入のうえ、ご返送ください。電話番号の変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                    </div>
+                    <div class="sub-option">
+                        <p>(お客様が電話で郵送を希望した場合)</p>
+                        <div class="script-box">
+                            <p>「ご登録のご住所に変更があるとのこと、かしこまりました。</p>
+                            <p>その場合、まずはご住所変更のお手続き行っていただく必要がございます。私の方で新しいご住所あてにご登録のご住所・電話番号の変更ができる書類を発送させていただきます。必要事項をご記入のうえ、ご返送ください。変更が完了しましたら、新しいメールアドレスに変更完了のお知らせが送信されますので、ご確認ください。」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+
+            // すべてのタブコンテンツを非表示にする
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // すべてのタブボタンからactiveクラスを削除する
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+
+            // 現在のタブコンテンツを表示し、クリックされたボタンにactiveクラスを追加する
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // ページ読み込み時に最初のタブをアクティブにする
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".tab-button").click();
+        });
+    </script>
+</body>
+</html>
+```
